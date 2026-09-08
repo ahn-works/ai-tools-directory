@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ahn-works.github.io/ai-tools-directory/sitemap.xml
