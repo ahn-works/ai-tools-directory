@@ -1,7 +1,10 @@
 import type { WorkflowPrompt } from "./workflows";
 import { withBilingualFields } from "./bilingualCatalog";
 
-const make = (id: string, title: string, category: string, tools: string[], purpose: string, request: string, constraints: string, output: string): WorkflowPrompt => ({ id, title, category, tools, purpose, background: "실제 업무 자료를 바탕으로 초안을 만들고 사람이 최종 검수해야 하는 상황입니다.", request, constraints, output, review: "원본 자료와 결과를 대조하고 숫자·이름·날짜·정책을 사람이 확인", caution: "민감정보·비밀번호·API 키를 넣지 말고, 발송·제출·삭제 전 반드시 승인" });
+const make = (id: string, title: string, category: string, tools: string[], purpose: string, ...parts: string[]): WorkflowPrompt => {
+  const [request, constraints, output] = parts.length === 4 ? parts.slice(1) : parts;
+  return { id, title, category, tools, purpose, background: "실제 업무 자료를 바탕으로 초안을 만들고 사람이 최종 검수해야 하는 상황입니다.", request, constraints, output, review: "원본 자료와 결과를 대조하고 숫자·이름·날짜·정책을 사람이 확인", caution: "민감정보·비밀번호·API 키를 넣지 말고, 발송·제출·삭제 전 반드시 승인" };
+};
 
 const baseExtraWorkflowPrompts: WorkflowPrompt[] = [
   make("sales-analysis", "월별 매출 추세 분석", "데이터 분석", ["ChatGPT", "Claude", "Gemini"], "월별 매출의 흐름과 변화 원인을 파악", "CSV에서 월별 매출·주문수·객단가를 계산하고 전월 대비 변화율, 최고·최저 월, 추가로 확인할 가설을 작성해줘.", "원본 수정 금지, 계산식 표시, 원인 단정 금지", "데이터 품질 → 지표 표 → 변화 해석 → 가설"),
@@ -37,6 +40,17 @@ const baseExtraWorkflowPrompts: WorkflowPrompt[] = [
   make("handoff", "인수인계 문서 만들기", "기획·검수", ["ChatGPT", "NotebookLM"], "다른 사람이 업무를 이어받도록 정리", "업무 목적·주기·절차·파일 위치·예외 상황·연락처·완료 기준을 인수인계 문서로 작성해줘.", "비밀번호는 문서에 넣지 않기, 실제 경로와 예시 경로 구분", "빠른 시작 → 표준 절차 → 예외 → 체크리스트"),
 ];
 
+
+const baseBeginnerKSkillWorkflowPrompts: WorkflowPrompt[] = [
+  make("kskill-character-counter", "한국어 글자수·맞춤법 검사 웹앱", "웹앱 제작", ["ChatGPT", "Gemini", "k-skill korean-character-count"], "공고·블로그·SNS 글의 글자수와 기본 점검을 한 화면에서 확인", "초보자가 입력창에 글을 붙여 넣으면 글자수·공백 포함/제외·문단 수를 보여 주는 작은 앱을 2~3시간 안에 만들고 싶습니다.", "입력창, 글자수 카드, 공백 포함/제외 전환, 초기화·복사 버튼, 긴 글 샘플을 포함한 반응형 웹앱을 만들고 단계별 작업·테스트·GitHub Pages 배포까지 안내해줘.", "문법 정확도를 보장하지 말고 글자수 계산 기준을 화면에 표시, 외부 전송 없이 브라우저에서 처리, 먼저 초안 후 검토", "아이디어 → 화면 3개 이하 → 입력·결과 기능 → 샘플 테스트 → 배포 체크리스트"),
+  make("kskill-weather-dust", "날씨·미세먼지 출근 준비 웹앱", "웹앱 제작", ["ChatGPT", "Gemini", "k-skill korea-weather", "k-skill fine-dust-location"], "지역을 입력하면 외출 준비를 쉽게 확인", "초보자가 시·군·구를 입력해 날씨와 미세먼지를 확인하고 우산·마스크·옷차림 메모를 남기는 앱을 만들고 싶습니다.", "지역 입력, 날씨·미세먼지 결과 카드, 상태 색상, 새로고침, 출처·측정시각, 준비물 체크리스트를 만들고 API가 없을 때 샘플 데이터로 작동하게 해줘. 화면 제작부터 오류·출처 검토·Pages 배포까지 단계별로 안내해줘.", "건강 진단이나 예보 확정 금지, 측정시각·출처 표시, API 키를 브라우저에 노출하지 않기", "입력 → 결과 → 출처 확인 → 모바일 테스트 → 배포 후 새로고침 확인"),
+  make("kskill-school-lunch", "학교 급식 메뉴 조회 웹앱", "웹앱 제작", ["ChatGPT", "Gemini", "k-skill k-schoollunch-menu"], "학교와 날짜를 골라 급식 메뉴를 보기 쉽게 확인", "초보자가 학교명·날짜를 선택하면 아침·점심·저녁 메뉴와 알레르기 번호를 보여 주는 앱을 만들고 싶습니다.", "학교 검색 입력, 날짜 선택, 급식 카드, 알레르기 안내, 즐겨찾기 학교, 데이터 없음 상태를 만들고 실제 API 연결 전 샘플 데이터로 화면을 완성해줘. 초안·검토·보완·배포 순서를 어린이도 따라 하게 설명해줘.", "알레르기 안전을 보장하지 말고 원문 번호를 표시, 급식 변경 가능성 안내, 개인정보 수집 금지", "학교·날짜 입력 → 메뉴 확인 → 원문 대조 → 오류 상태 확인 → 배포"),
+  make("kskill-delivery-tracker", "택배 배송상태 한눈에 보기 웹앱", "웹앱 제작", ["ChatGPT", "Gemini", "k-skill delivery-tracking"], "택배 운송장 여러 개의 상태를 한 화면에서 관리", "초보자가 운송장 번호를 직접 입력해 배송사·상태·마지막 확인일을 기록하는 간단한 목록 앱을 만들고 싶습니다.", "운송장 입력, 배송사 선택, 상태 카드, 마지막 확인시각, 복사·삭제, 개인정보 안내를 만들고 실제 조회 API가 없어도 샘플 상태로 버튼이 작동하게 해줘. API 연결 전후의 검토와 배포 방법을 단계별로 작성해줘.", "운송장 번호를 공개하지 않기, 배송정보를 확정적으로 해석하지 않기, 자동 구매·결제 기능 제외", "샘플 3건 입력 → 상태 변경 테스트 → 모바일 확인 → API·보안 점검 → Pages 배포"),
+  make("kskill-holiday-planner", "공휴일·연차 계획표 웹앱", "웹앱 제작", ["ChatGPT", "Gemini", "k-skill korean-holiday-calendar"], "공휴일을 기준으로 연차 후보와 휴일 일정을 보기 쉽게 정리", "초보자가 연도와 연차 일수를 입력하면 공휴일·주말·연차 후보를 달력으로 보는 앱을 만들고 싶습니다.", "연도 선택, 달력, 공휴일 배지, 연차 후보 체크, 총 휴일 수, 내보내기·초기화 버튼을 만들고 공휴일 데이터는 공식 출처 확인 필요로 표시해줘. 2~3시간 MVP 제작과 검토·배포 순서를 알려줘.", "연차 사용 가능 여부를 회사 규정처럼 단정하지 않기, 날짜·공휴일 원문 대조, 근태 확정 기능 제외", "연도 선택 → 달력 확인 → 공식 날짜 대조 → 모바일 테스트 → 배포"),
+  make("kskill-support-finder", "정부지원사업 초보 검색 웹앱", "웹앱 제작", ["ChatGPT", "Gemini", "k-skill government-support-survey"], "내 조건에 맞는 지원사업을 찾기 위한 검색 질문과 목록 만들기", "초보자가 업종·지역·사업 단계·마감일을 입력하면 확인할 지원사업 목록과 준비서류를 정리하는 앱을 만들고 싶습니다.", "조건 입력, 공고 카드, 마감일·지역·대상 필터, 공식 공고 링크, 확인 필요 배지를 만들고 샘플 공고로 실행 화면을 먼저 제작해줘. 실제 신청은 하지 않고 검색·검토·공식 링크 확인·배포까지 단계별로 안내해줘.", "지원 가능성을 보장하지 않기, 마감일·자격은 공식 공고 확인, 신청·제출 버튼 제외", "조건 입력 → 후보 비교 → 공식 공고 대조 → 준비 목록 → 배포 후 링크 확인"),
+  make("kskill-donation-finder", "지역 기부처 찾기 웹앱", "웹앱 제작", ["ChatGPT", "Gemini", "k-skill donation-place-search"], "지역·관심 분야에 맞는 기부처 후보를 비교", "초보자가 지역과 기부 분야를 입력하면 기부처 이름·활동·공식 확인 링크를 비교하는 앱을 만들고 싶습니다.", "지역·분야 입력, 기부처 카드, 1365 확인 링크, 연락처 복사, 확인일, 결과 없음 상태를 만들고 샘플 데이터로 작동하게 해줘. 기부 실행은 넣지 말고 정보 검토와 GitHub Pages 배포까지 단계별로 설명해줘.", "기부를 대신 실행하거나 신뢰성을 보장하지 않기, 공식 링크·확인일 표시, 개인정보·결제정보 수집 금지", "검색 조건 → 후보 확인 → 공식 링크 대조 → 연락처 검토 → 배포"),
+  make("kskill-daiso-finder", "다이소 상품·매장 확인 웹앱", "웹앱 제작", ["ChatGPT", "Gemini", "k-skill daiso-product-search"], "상품명과 매장을 입력해 확인할 질문과 검색 결과를 정리", "초보자가 상품 키워드와 매장명을 입력하면 상품 후보·매장 확인 링크·재고 확인 필요를 보여 주는 앱을 만들고 싶습니다.", "상품 검색창, 매장 입력, 상품 카드, 재고 확인 필요 배지, 공식몰 링크, 최근 확인일, 검색 기록 초기화를 만들고 샘플 데이터로 버튼을 작동시켜줘. 실제 재고는 공식 화면에서 확인하도록 하고 제작·검토·배포를 안내해줘.", "재고를 확정하지 않기, 공식 화면 우선, 구매·결제 자동화 제외, 상표·상품 정보는 공식 링크로 확인", "상품·매장 입력 → 후보 확인 → 공식 재고 대조 → 모바일 테스트 → 배포"),
+];
 
 const baseAccountingWorkflowPrompts: WorkflowPrompt[] = [
   make("accounting-cashbook", "입출금 내역 정리", "경리·회계", ["ChatGPT", "Claude", "Gemini"], "통장·카드 내역을 날짜와 거래 유형별로 정리", "입출금 내역의 날짜·적요·금액·거래처를 표준 열로 정리하고 수입·지출·이체·확인필요로 분류해줘.", "원본 금액 변경 금지, 계정과목은 제안으로 표시, 개인정보 마스킹", "정리표 → 분류 기준 → 확인 필요 거래"),
@@ -134,6 +148,7 @@ const baseAdvancedBusinessWorkflowPrompts: WorkflowPrompt[] = [
 ];
 
 export const extraWorkflowPrompts = withBilingualFields(baseExtraWorkflowPrompts);
+export const beginnerKSkillWorkflowPrompts = withBilingualFields(baseBeginnerKSkillWorkflowPrompts);
 export const accountingWorkflowPrompts = withBilingualFields(baseAccountingWorkflowPrompts);
 export const excelAutomationWorkflowPrompts = withBilingualFields(baseExcelAutomationWorkflowPrompts);
 export const advancedBusinessWorkflowPrompts = withBilingualFields(baseAdvancedBusinessWorkflowPrompts);
