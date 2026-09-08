@@ -1,6 +1,8 @@
+import { withBilingualFields } from "./bilingualCatalog";
+
 export type SkillEntry = { id:number; name:string; slug:string; category:string; summary:string; guide:string; howTo:string; example:string; compatible:string[]; license:string; licenseNote:string; source:string; sourceUrl:string; importUrl:string; verifiedAt:string; tags:string[] };
 
-export const skills: SkillEntry[] = [
+const baseSkills: SkillEntry[] = [
   {
     "id": 1,
     "name": "UI/UX Pro Max",
@@ -2808,4 +2810,5 @@ export const skills: SkillEntry[] = [
   }
 ];
 
+export const skills = withBilingualFields(baseSkills);
 export const skillCategories = ["전체", ...Array.from(new Set(skills.map((skill) => skill.category)))];

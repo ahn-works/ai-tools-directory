@@ -1,6 +1,7 @@
 /* Generated from the repository's expanded public catalog; resource lists and model-only records are excluded. */
 import { aimattersTools } from "./aimattersTools";
 import { googleLabsTools } from "./googleLabsTools";
+import { withBilingualFields } from "./bilingualCatalog";
 
 export type DirectoryTool = { id:number; slug:string; name:string; category:string; sourceCategory:string; description:string; useCase:string; tokenTip:string; promptStarter:string; pricing:string; source:string; verifiedAt:string; url:string; pricingUrl?: string; tags:string[] };
 const baseDirectoryTools: DirectoryTool[] = [
@@ -12462,5 +12463,5 @@ const newGoogleLabsTools = googleLabsTools
   .filter((tool) => !existingDirectoryNames.has(tool.name))
   .map((tool, index) => ({ ...tool, id: existingDirectoryTools.length + index + 1 }));
 
-export const directoryTools: DirectoryTool[] = [...mergedExistingDirectoryTools, ...newGoogleLabsTools];
+export const directoryTools = withBilingualFields([...mergedExistingDirectoryTools, ...newGoogleLabsTools]);
 export const directoryToolCategories = ['전체', ...Array.from(new Set(directoryTools.map((tool) => tool.category))).sort()];

@@ -1,8 +1,9 @@
 import type { WorkflowPrompt } from "./workflows";
+import { withBilingualFields } from "./bilingualCatalog";
 
 const make = (id: string, title: string, category: string, tools: string[], purpose: string, request: string, constraints: string, output: string): WorkflowPrompt => ({ id, title, category, tools, purpose, background: "실제 업무 자료를 바탕으로 초안을 만들고 사람이 최종 검수해야 하는 상황입니다.", request, constraints, output, review: "원본 자료와 결과를 대조하고 숫자·이름·날짜·정책을 사람이 확인", caution: "민감정보·비밀번호·API 키를 넣지 말고, 발송·제출·삭제 전 반드시 승인" });
 
-export const extraWorkflowPrompts: WorkflowPrompt[] = [
+const baseExtraWorkflowPrompts: WorkflowPrompt[] = [
   make("sales-analysis", "월별 매출 추세 분석", "데이터 분석", ["ChatGPT", "Claude", "Gemini"], "월별 매출의 흐름과 변화 원인을 파악", "CSV에서 월별 매출·주문수·객단가를 계산하고 전월 대비 변화율, 최고·최저 월, 추가로 확인할 가설을 작성해줘.", "원본 수정 금지, 계산식 표시, 원인 단정 금지", "데이터 품질 → 지표 표 → 변화 해석 → 가설"),
   make("customer-segment", "고객군별 구매 분석", "데이터 분석", ["ChatGPT", "Claude"], "고객을 구매 패턴으로 나누고 다음 행동을 찾기", "고객별 구매횟수·최근 구매일·총액으로 세그먼트를 제안하고 각 그룹에 맞는 안내 전략을 작성해줘.", "개인 식별 정보 제거, 세그먼트 기준 명시, 과도한 개인화 금지", "기준 → 그룹별 특징 → 추천 액션 → 한계"),
   make("data-cleaning", "엑셀 데이터 정리 계획", "데이터 분석", ["ChatGPT", "Codex"], "중복·빈칸·형식 오류를 찾아 정리 절차 만들기", "시트의 열별 자료형과 오류 패턴을 점검하고 안전한 정리 순서와 원본 백업 방법을 제안해줘.", "삭제 대신 별도 표시, 원본 보존, 임의 값 보정 금지", "오류 목록 → 정리 규칙 → 검증 방법 → VBA/수식 후보"),
@@ -37,7 +38,7 @@ export const extraWorkflowPrompts: WorkflowPrompt[] = [
 ];
 
 
-export const accountingWorkflowPrompts: WorkflowPrompt[] = [
+const baseAccountingWorkflowPrompts: WorkflowPrompt[] = [
   make("accounting-cashbook", "입출금 내역 정리", "경리·회계", ["ChatGPT", "Claude", "Gemini"], "통장·카드 내역을 날짜와 거래 유형별로 정리", "입출금 내역의 날짜·적요·금액·거래처를 표준 열로 정리하고 수입·지출·이체·확인필요로 분류해줘.", "원본 금액 변경 금지, 계정과목은 제안으로 표시, 개인정보 마스킹", "정리표 → 분류 기준 → 확인 필요 거래"),
   make("accounting-reconcile", "매입·매출 대사", "경리·회계", ["ChatGPT", "Claude"], "두 자료의 금액과 거래처 차이 찾기", "매입·매출 장부와 통장 또는 세금계산서 목록을 비교해 누락·중복·금액 차이를 찾아줘.", "대사 기준일과 허용 오차를 먼저 표시, 차이를 오류로 단정하지 않기", "일치 → 차이 → 원인 후보 → 확인 순서"),
   make("accounting-voucher", "영수증 증빙 정리", "경리·회계", ["ChatGPT", "Gemini"], "영수증·거래 자료를 월별로 정리", "영수증 목록에서 거래일·거래처·금액·결제수단·증빙상태를 정리하고 빠진 증빙을 알려줘.", "이미지 판독 결과는 원본 재확인, 주민번호·카드번호 저장 금지", "증빙대장 → 누락 목록 → 재확인 질문"),
@@ -53,7 +54,7 @@ export const accountingWorkflowPrompts: WorkflowPrompt[] = [
 ];
 
 
-export const excelAutomationWorkflowPrompts: WorkflowPrompt[] = [
+const baseExcelAutomationWorkflowPrompts: WorkflowPrompt[] = [
   make("excel-clean-columns", "엑셀 열·형식 자동 정리", "엑셀 자동화", ["ChatGPT", "Claude", "Gemini"], "엑셀 파일의 열 이름과 데이터 형식을 일정하게 정리", "아래 엑셀 표의 열 이름, 날짜 형식, 금액 형식, 전화번호 형식을 점검하고 통일 규칙과 수정 전·후 예시를 만들어줘. 원본 행 순서는 유지해줘.", "원본 파일을 먼저 복사하고 값이 불확실한 셀은 임의 수정하지 말고 확인 필요로 표시", "문제 열 → 정리 규칙 → 적용 수식/절차 → 검수표"),
   make("excel-duplicate-check", "중복 행 찾기와 제거 계획", "엑셀 자동화", ["ChatGPT", "Claude"], "고객·거래·재고 데이터의 중복을 안전하게 확인", "엑셀 파일에서 어떤 열 조합을 고유키로 사용할지 제안하고 완전 중복·부분 중복·확인 필요 행을 구분하는 방법을 만들어줘.", "삭제하지 말고 중복 여부 열을 추가하며, 고유키 기준을 사람이 승인한 뒤 적용", "고유키 후보 → 중복 판정 규칙 → 표시용 수식 → 삭제 전 체크리스트"),
   make("excel-merge-sheets", "여러 시트 한 장으로 합치기", "엑셀 자동화", ["ChatGPT", "Claude", "Codex"], "월별·부서별 시트를 하나의 표로 통합", "같은 열 구조를 가진 여러 시트를 세로로 합치는 Power Query 또는 VBA 절차를 설계해줘. 원본 시트명도 결과에 남겨줘.", "열 순서가 다른 시트와 누락 열은 별도 경고, 원본 시트 수정·삭제 금지", "준비 조건 → 통합 절차 → 예외 처리 → 완료 검수"),
@@ -71,7 +72,7 @@ export const excelAutomationWorkflowPrompts: WorkflowPrompt[] = [
 ];
 
 
-export const advancedBusinessWorkflowPrompts: WorkflowPrompt[] = [
+const baseAdvancedBusinessWorkflowPrompts: WorkflowPrompt[] = [
   // CRM 15개
   make("crm-lead-scoring", "CRM 리드 점수화 기준 설계", "CRM", ["ChatGPT", "NotebookLM"], "영업 리드의 우선순위를 일관된 기준으로 정하기", "CRM의 회사규모·업종·관심제품·최근활동·문의내용·계약가능시기를 입력하고 점수 기준을 설계해줘. 점수마다 영업 담당자가 할 다음 행동도 연결해줘.", "개인정보와 민감정보를 최소화하고 점수가 구매 가능성을 확정한다고 표현하지 않기", "입력 열 → 점수표 → 예시 3건 → 다음 행동 → 검수 질문"),
   make("crm-pipeline-audit", "영업 파이프라인 누락 점검", "CRM", ["ChatGPT", "NotebookLM"], "CRM 단계별 누락과 정체 거래를 찾기", "기회명·단계·예상금액·마지막 활동일·다음 행동·담당자를 기준으로 파이프라인을 점검하고 오래 멈춘 거래와 필수 입력 누락을 구분해줘.", "금액이나 성공 가능성을 임의로 바꾸지 말고 담당자 확인 목록으로 제시", "데이터 품질 → 단계별 현황 → 정체 거래 → 확인 담당자 → 다음 액션"),
@@ -131,3 +132,8 @@ export const advancedBusinessWorkflowPrompts: WorkflowPrompt[] = [
   make("inventory-receiving-check", "입고 검수 체크리스트", "재고관리", ["ChatGPT", "NotebookLM"], "입고 시 수량·품질·라벨·유통기한을 빠짐없이 확인", "발주서·납품서·입고 수량·상품코드·로트·유통기한·불량 기준을 기준으로 입고 검수표와 불일치 처리 절차를 만들어줘.", "검수 전 ERP 입고 확정 금지, 사진·증빙 위치와 반품 승인자를 명시", "검수 항목 → 대조표 → 불일치 → 보류·반품 → ERP 반영 승인"),
   make("inventory-location", "창고 위치 최적화 검토", "재고관리", ["ChatGPT", "NotebookLM"], "출고 동선과 보관 위험을 줄일 위치를 검토", "상품 출고 빈도·중량·부피·취급주의·현재 위치·통로 정보를 기준으로 위치 변경 후보와 평가 기준을 제안해줘.", "안전 규정과 현장 확인 없이 위치를 변경하지 말고 시범 구역에서 검증", "현황 → 후보 위치 → 이동 비용 → 안전 점검 → 파일럿 계획"),
 ];
+
+export const extraWorkflowPrompts = withBilingualFields(baseExtraWorkflowPrompts);
+export const accountingWorkflowPrompts = withBilingualFields(baseAccountingWorkflowPrompts);
+export const excelAutomationWorkflowPrompts = withBilingualFields(baseExcelAutomationWorkflowPrompts);
+export const advancedBusinessWorkflowPrompts = withBilingualFields(baseAdvancedBusinessWorkflowPrompts);

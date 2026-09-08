@@ -1,6 +1,8 @@
+import { withBilingualFields } from "./bilingualCatalog";
+
 export type WorkflowPrompt = { id: string; title: string; category: string; tools: string[]; purpose: string; background: string; request: string; constraints: string; output: string; review: string; caution: string };
 
-export const workflowPrompts: WorkflowPrompt[] = [
+const baseWorkflowPrompts: WorkflowPrompt[] = [
   { id: "mail-automation", title: "고객별 날짜 도래 메일 초안 만들기", category: "업무 자동화", tools: ["ChatGPT", "Claude", "Manus"], purpose: "고객마다 다른 제품·날짜·안내 내용을 넣은 메일 초안을 빠르게 만들기", background: "거래처 40~50곳에 서로 다른 제품 정보와 도래 날짜를 안내해야 합니다.", request: "첨부한 표의 고객명·제품명·도래일·담당자 메모를 기준으로 고객별 메일 초안을 작성해줘. 각 행을 하나의 메일로 만들고, 먼저 데이터 누락·날짜 오류를 표로 표시한 뒤 초안을 생성해줘.", constraints: "메일은 180자 이내, 과장 표현 금지, 발송하지 말고 초안만 생성, 날짜는 YYYY-MM-DD로 통일", output: "검수표 → 고객별 제목·본문 표 → 누락 데이터 목록", review: "고객명·날짜·제품명이 원본과 일치하는지 사람이 확인", caution: "자동 발송 전 반드시 사람 승인. 개인정보와 이메일 주소를 공개 채팅에 넣지 않기" },
   { id: "document-summary", title: "긴 문서 1페이지 요약", category: "문서·요약", tools: ["ChatGPT", "Claude", "NotebookLM"], purpose: "긴 보고서나 PDF를 의사결정에 필요한 내용만 빠르게 파악하기", background: "팀 회의 전에 40쪽 보고서의 핵심 내용과 결정할 사항을 준비해야 합니다.", request: "이 문서를 근거로 핵심 주장 5개, 중요한 숫자, 결정이 필요한 질문, 반대 근거를 분리해 요약해줘. 원문 페이지 번호를 함께 표시하고 추측은 ‘확인 필요’로 표시해줘.", constraints: "A4 1페이지 분량, 원문에 없는 사실 추가 금지, 인용과 해석을 구분", output: "핵심 요약 → 근거 표 → 결정 질문 → 확인 필요 항목", review: "요약 문장이 원문 근거와 맞는지 페이지별 대조", caution: "법률·의료·재무 문서는 요약을 최종 판단으로 사용하지 않기" },
   { id: "csv-analysis", title: "엑셀·CSV 데이터 분석", category: "데이터 분석", tools: ["ChatGPT", "Claude", "Gemini"], purpose: "표 데이터를 정리하고 중요한 변화·이상치·다음 질문을 찾기", background: "월별 매출 CSV에서 상품별 변화와 이상한 값을 확인하려고 합니다.", request: "먼저 열 이름과 자료형, 결측치, 중복 행을 검사해줘. 그다음 월별·상품별 매출을 비교하고 증가율 상위 5개와 감소율 상위 5개를 표로 만들어줘. 분석에 사용한 계산식도 설명해줘.", constraints: "원본 데이터는 수정하지 말고, 표본이 부족한 경우 결론을 약하게 표현, 가짜 숫자 생성 금지", output: "데이터 품질 점검 → 분석표 → 차트 제안 → 해석과 한계", review: "합계·기간·필터 조건을 사람이 재계산", caution: "개인 식별 정보가 있는 파일은 익명화 후 업로드" },
@@ -19,3 +21,5 @@ export const workflowPrompts: WorkflowPrompt[] = [
   { id: "release-check", title: "웹앱 배포 전 점검", category: "배포·운영", tools: ["Manus", "Codex", "Claude"], purpose: "웹앱을 공개하기 전에 기능·보안·모바일·성능을 점검하기", background: "여행 일정 웹앱을 Netlify나 Vercel에 배포하려고 합니다.", request: "이 프로젝트의 배포 전 체크리스트를 기능 테스트·반응형·접근성·SEO·환경변수·에러 처리·데이터 보호·롤백 계획으로 나눠줘. 각 항목에 확인 방법과 통과 기준을 작성해줘.", constraints: "실제 비밀키를 출력하지 말고, 결제·삭제·메일 발송 기능은 테스트 모드 기준", output: "체크리스트 표 → 우선순위 → 발견된 위험 → 배포 후 모니터링", review: "모바일 실기기와 시크릿 브라우저에서 핵심 흐름을 직접 테스트", caution: "배포 전 API 키를 저장소에서 검색하고 공개 저장소에 올리지 않기" },
   { id: "notebooklm-study", title: "내 자료로 공부 계획 만들기", category: "학습·리서치", tools: ["NotebookLM", "Gemini", "ChatGPT"], purpose: "내가 올린 자료만 근거로 학습 순서와 복습 질문을 만들기", background: "바이브코딩 강의 PDF와 실습 노트를 2주 안에 공부하려고 합니다.", request: "업로드한 자료만 근거로 초보자용 14일 학습 계획을 만들어줘. 매일 핵심 개념, 30분 실습, 스스로 답할 질문 3개, 자료의 페이지 근거를 표시해줘. 자료에 없는 내용은 별도 표시해줘.", constraints: "자료 밖의 사실을 단정하지 않기, 하루 60분 이내, 어려운 용어는 쉬운 정의 추가", output: "14일 표 → 개념 지도 → 복습 퀴즈 → 막힌 부분 질문", review: "각 설명과 페이지 근거를 대조하고 실제 실습 결과 기록", caution: "학습 도구의 요약도 원문과 대조해 오류 확인" },
 ];
+
+export const workflowPrompts = withBilingualFields(baseWorkflowPrompts);

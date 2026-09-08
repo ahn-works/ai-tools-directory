@@ -1,6 +1,8 @@
 // 350개 홈페이지 UI 위치·기능 카탈로그. 패턴 참고용이며 프로젝트에 맞게 조정합니다.
+import { withBilingualFields } from "./bilingualCatalog";
+
 export type UiCatalogEntry = { id: number; category: string; location: string; name: string; purpose: string; pattern: string; example: string; tools: string };
-export const uiCatalog350: UiCatalogEntry[] = [
+const baseUiCatalog350: UiCatalogEntry[] = [
   {
     "id": 1,
     "category": "브랜드·GNB",
@@ -3502,3 +3504,5 @@ export const uiCatalog350: UiCatalogEntry[] = [
     "tools": "Canva · HubSpot · Webflow"
   }
 ];
+
+export const uiCatalog350 = withBilingualFields(baseUiCatalog350);

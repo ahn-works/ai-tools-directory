@@ -1,7 +1,8 @@
 import type { SkillEntry } from "./skills";
+import { withBilingualFields } from "./bilingualCatalog";
 
 // GitHub verified skill과 구분되는 AI 활용 가이드 실전 플레이북 300개입니다. 조회수·인기도를 보장하지 않으며 원문·서비스 정책을 확인하세요.
-export const skills300: SkillEntry[] = [
+const baseSkills300: SkillEntry[] = [
   {
     "id": 1,
     "name": "아이디어 발굴",
@@ -8543,3 +8544,5 @@ export const skills300: SkillEntry[] = [
     ]
   }
 ];
+
+export const skills300 = withBilingualFields(baseSkills300);

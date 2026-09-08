@@ -8,6 +8,8 @@ import { accountingWorkflowPrompts, advancedBusinessWorkflowPrompts, excelAutoma
 import { popularTools } from "./popularTools";
 import { BRAND_NAME } from "./brand";
 
+import { withBilingualFields } from "./bilingualCatalog";
+
 export type SearchKind = "AI 도구" | "SKILL" | "UI Guide" | "디자인 시스템" | "워크플로우" | "아카이브";
 export type SearchFilter = "전체" | SearchKind | "프롬프트";
 export type SearchSort = "relevance" | "popular" | "recent" | "trust";
@@ -44,7 +46,7 @@ function trustFor(kind: SearchKind, source?: string) {
 
 const makeRecordText = (record: SearchRecord) => normalizeSearchText([record.title, record.summary, record.meta, ...record.tags].join(" "));
 
-export const globalSearchRecords: SearchRecord[] = [
+const baseGlobalSearchRecords: SearchRecord[] = [
   ...directoryTools.map((tool) => ({
     id: `tool:${tool.slug}`,
     kind: "AI 도구" as const,
@@ -122,6 +124,8 @@ export const globalSearchRecords: SearchRecord[] = [
     trustScore: trustFor("아카이브", item.sourceUrl),
   })),
 ];
+
+export const globalSearchRecords = withBilingualFields(baseGlobalSearchRecords);
 
 const indexedRecords = globalSearchRecords.map((record) => ({ record, text: makeRecordText(record) }));
 
