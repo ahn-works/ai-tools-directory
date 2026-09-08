@@ -37,7 +37,7 @@ jobs:
       - name: Preserve SPA routes
         run: |
           cp ./dist/public/index.html ./dist/public/404.html
-          for route in tools skills workflows ui-guide path principles search 404; do
+          for route in tools skills workflows ui-guide path principles beginner-guide search 404; do
             mkdir -p "./dist/public/${route}"
             cp ./dist/public/index.html "./dist/public/${route}/index.html"
           done

@@ -5,6 +5,7 @@ export const siteNav = [
   ["스킬 라이브러리", "/skills"],
   ["학습 경로", "/path"],
   ["사용 원칙", "/principles"],
+  ["초보자 가이드", "/beginner-guide"],
 ] as const;
 
 export const skillCollectionNav = {

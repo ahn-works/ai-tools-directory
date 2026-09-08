@@ -11,6 +11,7 @@ describe("mobile navigation contract", () => {
       "스킬 라이브러리",
       "학습 경로",
       "사용 원칙",
+      "초보자 가이드",
     ]);
   });
 
