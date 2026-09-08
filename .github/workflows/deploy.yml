@@ -34,6 +34,8 @@ jobs:
         run: pnpm install --no-frozen-lockfile
       - name: Build
         run: pnpm run build:vercel
+      - name: Preserve SPA routes
+        run: cp ./dist/public/index.html ./dist/public/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
