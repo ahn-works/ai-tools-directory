@@ -61,6 +61,19 @@ const promptGuides: Record<string, [string, string, string, string]> = {
   "10": ["스타일별로 비교하는 짧은 영상 제목 도우미", "영상의 실제 장면·분위기·전달할 사실을 입력합니다. 다섯 제목 중 사실과 가장 가까운 것을 고릅니다.", "영상에 없는 장면을 약속하지 않았는가? 혐오·공포·거짓 과장이 없는가? 제목이 짧고 내용과 맞는가?", "게시 전 영상 첫 장면과 제목을 함께 보고 오해 여부를 확인합니다. 반응은 저장하되 다음 제목 실험에 참고만 합니다."],
 };
 
+const nextPromptGuides: Record<string, string[]> = {
+  "01": ["추천 기능: 카테고리·예산·연령·선물 대상 필터와 장바구니 합계를 추가하고 샘플 10개로 작동시켜 줘.", "초안 결과를 마트 공식몰·관광지 공식 사이트와 대조해 가격·재고·반입 제한을 확인 필요로 표시해 줘.", "모바일에서 장바구니와 확인 필요 상품을 먼저 보이게 고치고 GitHub Pages 배포 순서를 초보자용으로 알려 줘."],
+  "02": ["추천 기능: 기온·비·바람 입력, 코디 3장, 아우터 대안, 저장·다시 추천 버튼을 추가해 줘.", "추천 결과의 날씨 조건과 옷 조합을 실제 날씨 자료와 대조하고 틀릴 수 있는 부분을 표시해 줘.", "샘플 입력 3개로 모바일 버튼을 테스트한 뒤 GitHub 저장·빌드·Pages 배포 체크리스트를 만들어 줘."],
+  "03": ["추천 기능: 소재·색상·준비물 입력, 단계별 타이머, 금지 조합 경고, 중단 버튼을 추가해 줘.", "각 단계가 제품 라벨·안전 자료와 맞는지 검토하고 위험하거나 모르는 내용은 전문가 확인으로 바꿔 줘.", "빈 입력·위험 입력·정상 입력을 테스트하고 안전 안내를 첫 화면에 넣어 배포해 줘."],
+  "04": ["추천 기능: 장르·러닝타임·플랫폼·피할 요소 필터와 추천 비교표·찜 버튼을 추가해 줘.", "현재 플랫폼 제공 여부·등급·러닝타임을 공식 서비스에서 다시 확인하고 스포일러를 제거해 줘.", "모바일에서 필터와 찜을 테스트하고 샘플 데이터와 실제 배포 데이터 분리 방법을 알려 줘."],
+  "05": ["추천 기능: 사건 입력, 공감·사과문·피할 말 탭, 복사 버튼, 답장 없음 안내를 추가해 줘.", "사과문에 사실과 추측·변명이 섞이지 않았는지 검토하고 상대를 단정하는 문장을 삭제해 줘.", "민감정보를 지운 샘플로 테스트한 뒤 공유 전 개인정보 점검과 Pages 배포 방법을 알려 줘."],
+  "06": ["추천 기능: 이메일·메신저 탭, 가능한 날짜 선택, 대안 제시, 제목 복사 버튼을 추가해 줘.", "받는 사람·날짜·첨부파일·약속 가능 여부를 원문과 대조하고 거짓 약속을 제거해 줘.", "정상·급한 요청·날짜 없음 상황을 테스트하고 승인 후 공유·배포 체크리스트를 작성해 줘."],
+  "07": ["추천 기능: 글 붙여넣기, 3줄·1줄·표 탭, 원문 위치, 복사 버튼, 개인정보 경고를 추가해 줘.", "요약 숫자·이름·기간을 원문과 대조하고 근거 없는 문장은 확인 필요로 표시해 줘.", "짧은 글·긴 글·빈 입력을 테스트한 뒤 빌드와 GitHub Pages 배포 순서를 만들어 줘."],
+  "08": ["추천 기능: 아이 나이·주인공 입력, 5장면 카드, 읽어주기 화면, 질문 카드, 다시 쓰기 버튼을 추가해 줘.", "폭력·공포·차별·위험 행동이 없는지 부모 검토 체크리스트로 확인해 줘.", "6세·10세 샘플로 글자 크기와 모바일 읽기를 테스트하고 안전 안내를 포함해 배포해 줘."],
+  "09": ["추천 기능: 준비·본운동·마무리 탭, 타이머, 휴식, 대체 동작, 통증 중단 경고를 추가해 줘.", "운동 시간·세트·휴식 계산을 대조하고 의학적 진단처럼 보이는 문장을 제거해 줘.", "무릎 통증 없음·통증 있음·빈 입력을 테스트하고 모바일 타이머와 배포 후 실행을 확인해 줘."],
+  "10": ["추천 기능: 제목 스타일 필터, 제목·썸네일·첫 자막 카드, 복사·다시 생성 버튼을 추가해 줘.", "각 제목이 실제 영상 장면과 맞는지 대조하고 과장·혐오·거짓 약속을 제거해 줘.", "15초 영상 샘플 3개를 테스트하고 공유 전 저작권·사실·모바일 화면을 검토해 배포해 줘."],
+};
+
 function CopyPromptButton({ prompt }: { prompt: string }) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
@@ -138,7 +151,7 @@ export function BeginnerGuidePage() {
 
         <div className="beginner-guide-section beginner-example-section">
           <div className="beginner-guide-section-head"><span>04-B / COPY & TRY</span><h2>상세 프롬프트로 만드는 10가지</h2><p>입력 예시는 시작 재료이고, 아래 제작 프롬프트가 실제 설계도입니다. 대괄호 안의 조건을 바꾼 뒤 무료 ChatGPT 또는 Gemini에 붙여 넣고 결과를 검토하세요.</p></div>
-          <div className="beginner-example-grid">{promptExamples.map(([num, title, input, prompt]) => { const [feature, run, checklist, review] = promptGuides[num]; return <article key={num}><div className="beginner-example-top"><span>{num}</span><small>무료 ChatGPT · Gemini</small></div><h3>{title}</h3><p className="beginner-example-input"><strong>입력 예시</strong>{input}</p><details open><summary>200자 이내 제작 프롬프트</summary><p className="beginner-example-prompt">{prompt}</p><CopyPromptButton prompt={prompt} /></details><div className="beginner-example-guide"><div><b>주요 기능</b><p>{feature}</p></div><div><b>만들기 전</b><p>{checklist}</p></div><div><b>작동 방법</b><p>{run}</p></div><div><b>만든 뒤 검토</b><p>{review}</p></div><div><b>공유·배포</b><p>결과를 직접 확인한 뒤 필요한 사람에게 복사해 공유하세요. 웹앱을 만들었다면 샘플 입력으로 다시 테스트하고 GitHub에 저장한 뒤 Pages 주소를 열어 모바일 화면과 링크를 확인하세요.</p></div></div></article>; })}</div>
+          <div className="beginner-example-grid">{promptExamples.map(([num, title, input, prompt]) => { const [feature, run, checklist, review] = promptGuides[num]; const nextPrompts = nextPromptGuides[num] || []; return <article key={num}><div className="beginner-example-top"><span>{num}</span><small>무료 ChatGPT · Gemini</small></div><h3>{title}</h3><p className="beginner-example-input"><strong>입력 예시</strong>{input}</p><details open><summary>실행형 웹앱 제작 프롬프트</summary><p className="beginner-example-prompt">{prompt}</p><CopyPromptButton prompt={prompt} /></details><div className="beginner-example-guide"><div><b>01 초안</b><p>주요 기능: {feature} 목표·입력자료·화면·샘플 데이터를 먼저 정합니다.</p></div><div><b>02 검토</b><p>{checklist} 원본·출처·사실과 추측을 대조합니다.</p></div><div><b>03 보완</b><p>결과 형식과 제한을 보완합니다. 작동 방법: {run}</p></div><div><b>04 실행 준비</b><p>담당자·승인자·기록 방법을 정하고 외부 발송·수정·삭제 전 승인을 둡니다.</p></div><div><b>05 반복 개선</b><p>만든 뒤 검토: {review} 실제 사용 결과를 기록해 다음 회차에 반영합니다.</p></div><div><b>공유·배포</b><p>샘플 입력·빈 입력·오류 입력을 테스트하고 GitHub에 저장한 뒤 Pages 주소에서 모바일·버튼·링크를 확인합니다.</p></div></div><div className="beginner-next-prompts"><b>1단계 완료 후 추천 기능·프롬프트</b>{nextPrompts.map((nextPrompt, index) => <div key={nextPrompt}><span>추천 {index + 1}</span><p>{nextPrompt}</p><CopyPromptButton prompt={nextPrompt} /></div>)}</div></article>; })}</div>
         </div>
 
         <div className="beginner-guide-section beginner-travel-app-section">

@@ -9,8 +9,6 @@ describe("mobile navigation contract", () => {
       "도구 찾기",
       "UI 참고",
       "스킬 라이브러리",
-      "학습 경로",
-      "사용 원칙",
       "초보자 가이드",
     ]);
   });
