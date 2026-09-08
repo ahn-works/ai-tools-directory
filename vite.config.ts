@@ -224,6 +224,7 @@ function vitePluginLocalApi(): Plugin {
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy(), vitePluginLocalApi()];
 
 export default defineConfig({
+  base: "/ai-tools-directory/",
   plugins,
   resolve: {
     alias: {
