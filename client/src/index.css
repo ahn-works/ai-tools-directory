@@ -1399,4 +1399,7 @@ body { background:var(--paper); color:var(--ink); }
 .beginner-next-prompts > div > span { color:var(--tomato); font:700 10px/1 var(--display); }
 .beginner-next-prompts p { color:var(--muted); font-size:11px; line-height:1.55; }
 .beginner-next-prompts .beginner-copy-button { min-height:29px; padding:0 9px; font-size:10px; }
+.beginner-review-recommendations { border-top-color:var(--tomato); }
+.beginner-review-recommendations > b { color:var(--tomato); }
+.beginner-recommendation-note { color:var(--muted); font-size:11px; line-height:1.6; margin:0 0 2px; }
 @media (max-width:560px) { .beginner-next-prompts > div { grid-template-columns:1fr; gap:6px; }.beginner-next-prompts .beginner-copy-button { justify-self:start; } }
