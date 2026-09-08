@@ -524,7 +524,7 @@ h1, h2, h3 { text-wrap:balance; word-break:keep-all; }
 p { text-wrap:pretty; word-break:keep-all; }
 .topbar { padding-inline:clamp(20px,5vw,72px); }
 .topnav { gap:clamp(18px,2.5vw,34px); white-space:nowrap; }
-.content-layout { grid-template-columns:minmax(270px,300px) minmax(0,1fr); }
+.content-layout { grid-template-columns:minmax(0,1fr); }
 .index-rail { padding-left:clamp(28px,5vw,72px); padding-right:32px; }
 .rail-item { width:100%; white-space:normal; line-height:1.35; }
 .directory-panel { padding-left:clamp(32px,5vw,78px); padding-right:clamp(32px,5vw,78px); }
