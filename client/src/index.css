@@ -1357,3 +1357,19 @@ body { background:var(--paper); color:var(--ink); }
 .beginner-example-guide b { color:var(--cobalt); font:700 10px/1.35 var(--display); letter-spacing:.04em; }
 .beginner-example-guide p { color:var(--muted); font-size:11px; line-height:1.65; }
 @media (max-width:560px) { .beginner-example-guide > div { grid-template-columns:1fr; gap:3px; }.beginner-example-guide b { font-size:9px; } }
+
+
+/* Beginner guide: detailed prompts and free-tool walkthrough tabs. */
+.beginner-platform-section { background:#f1f4ff; }
+.beginner-platform-tabs { display:flex; gap:8px; margin:24px 0 0; }
+.beginner-platform-tabs button { padding:13px 18px; border:1px solid #aab7d6; background:#fff; color:var(--ink); cursor:pointer; font:700 12px/1 var(--display); }
+.beginner-platform-tabs button.is-active { border-color:var(--cobalt); background:var(--cobalt); color:#fff; }
+.beginner-platform-panel { max-width:920px; margin-top:0; padding:24px 26px 26px; border:1px solid #b9c6e2; border-top:0; background:#fff; }
+.beginner-platform-panel h3 { margin:0 0 16px; color:var(--ink); font-size:22px; letter-spacing:-.04em; }
+.beginner-platform-panel ol { margin:0; padding-left:22px; color:#4d596c; font-size:13px; line-height:1.85; }
+.beginner-platform-panel li { padding-left:4px; }
+.beginner-tip-box { margin-top:20px; padding:15px 17px; border-left:4px solid var(--tomato); background:#fff2ed; }
+.beginner-tip-box b { display:block; margin-bottom:6px; color:var(--tomato); font-size:12px; }
+.beginner-tip-box p { margin:0; color:#4f5663; font-size:13px; line-height:1.7; }
+.beginner-example-prompt { max-height:460px; overflow:auto; white-space:pre-wrap; }
+@media (max-width:620px) { .beginner-platform-tabs button { flex:1; padding-inline:8px; } .beginner-platform-panel { padding:19px 17px 21px; } .beginner-platform-panel h3 { font-size:18px; } .beginner-platform-panel ol { font-size:12px; } }
