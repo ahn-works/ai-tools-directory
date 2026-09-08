@@ -3,7 +3,7 @@ import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Router as WouterRouter, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
@@ -19,7 +19,8 @@ const GlobalSearchPage = lazy(() => import("./pages/GlobalSearchPage").then((mod
 const BeginnerGuidePage = lazy(() => import("./pages/BeginnerGuidePage").then((module) => ({ default: module.BeginnerGuidePage })));
 
 function Router() {
-  return <Suspense fallback={<div className="route-loading" role="status"><span>AI 활용 가이드 / LOADING</span><strong>잠시만요, 화면을 펼치는 중입니다.</strong></div>}><Switch><Route path="/" component={Home} /><Route path="/workflows" component={WorkflowsPage} /><Route path="/tools" component={ToolsPage} /><Route path="/workflows/:id" component={WorkflowDetailPage} /><Route path="/ui-guide" component={UiGuidePage} /><Route path="/skills" component={SkillsPage} /><Route path="/path" component={PathPage} /><Route path="/principles" component={PrinciplesPage} /><Route path="/beginner-guide" component={BeginnerGuidePage} /><Route path="/search" component={GlobalSearchPage} /><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch></Suspense>;
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  return <WouterRouter base={base}><Suspense fallback={<div className="route-loading" role="status"><span>AI 활용 가이드 / LOADING</span><strong>잠시만요, 화면을 펼치는 중입니다.</strong></div>}><Switch><Route path="/" component={Home} /><Route path="/workflows" component={WorkflowsPage} /><Route path="/tools" component={ToolsPage} /><Route path="/workflows/:id" component={WorkflowDetailPage} /><Route path="/ui-guide" component={UiGuidePage} /><Route path="/skills" component={SkillsPage} /><Route path="/path" component={PathPage} /><Route path="/principles" component={PrinciplesPage} /><Route path="/beginner-guide" component={BeginnerGuidePage} /><Route path="/search" component={GlobalSearchPage} /><Route path="/404" component={NotFound} /><Route component={NotFound} /></Switch></Suspense></WouterRouter>;
 }
 
 export default function App() {
