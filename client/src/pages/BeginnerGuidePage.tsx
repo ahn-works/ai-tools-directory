@@ -10,14 +10,6 @@ const starterSteps = [
   ["04", "검수 기준을 만들기", "빠진 내용, 숫자 오류, 출처, 말투, 개인정보 노출 여부를 체크리스트로 만듭니다."],
 ];
 
-const workProcessSteps = [
-  ["01 초안", "업무 목표와 입력자료 정리", "무엇을 만들지 한 문장으로 쓰고 파일·메모·링크·기준일을 준비합니다."],
-  ["02 검토", "초안과 원본 자료 대조", "숫자·이름·날짜·출처를 원본과 비교하고 모르는 내용은 확인 질문으로 남깁니다."],
-  ["03 보완", "결과 형식과 제약 보완", "표·카드·문서·웹앱 중 결과 모양을 정하고 금지사항·검수 기준을 추가합니다."],
-  ["04 실행 준비", "담당자·승인·기록 연결", "누가 언제 승인하고 실행하는지 정하며 발송·수정·삭제 전 승인과 기록을 둡니다."],
-  ["05 반복 개선", "실제 결과를 반영해 다음 회차 개선", "잘된 점·오류·재작업을 기록하고 다음 프롬프트와 기능을 한 가지씩 고칩니다."],
-];
-
 const scenarios = [
   ["업무일지", "오늘 한 일을 시간순으로 붙여 넣고 완료·진행·막힘·내일 할 일 표로 정리합니다.", "ChatGPT 채팅"],
   ["거래처 관리", "거래처별 최근 연락, 요청사항, 다음 행동을 분리하고 미확정 정보는 질문으로 남깁니다.", "ChatGPT + 스프레드시트"],
@@ -130,10 +122,6 @@ export function BeginnerGuidePage() {
           <div className="beginner-step-grid">{starterSteps.map(([num, title, text]) => <article key={num}><span>{num}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
         </div>
 
-        <div className="beginner-guide-section beginner-process-section">
-          <div className="beginner-guide-section-head"><span>01-B / WORK PROCESS</span><h2>업무는 이 5단계로 진행하세요.</h2><p>처음부터 완벽하게 만들지 않습니다. 초안을 만들고, 원본과 비교하고, 보완한 뒤 승인과 기록을 연결합니다.</p></div>
-          <div className="beginner-process-grid">{workProcessSteps.map(([label, title, text]) => <article key={label}><span>{label}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
-        </div>
 
         <div className="beginner-guide-section beginner-tool-chooser">
           <div className="beginner-guide-section-head"><span>02 / TOOL CHOICE</span><h2>초보자용 도구 선택법</h2><p>처음에는 기능이 가장 많은 도구보다, 내가 원하는 결과를 가장 빨리 확인할 수 있는 도구를 고릅니다.</p></div>
