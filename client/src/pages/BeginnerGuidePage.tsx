@@ -179,15 +179,50 @@ export function BeginnerGuidePage() {
           <div className="beginner-scenario-grid">{scenarios.map(([title, text, tool]) => <article key={title}><div><span>{tool}</span><h3>{title}</h3></div><p>{text}</p><Link href="/workflows" className="text-link">비슷한 업무 찾기 <ArrowRight size={14} /></Link></article>)}</div>
         </div>
 
-        <div className="beginner-guide-section beginner-review-section">
-          <div className="beginner-guide-section-head"><span>06 / REVIEW</span><h2>AI 결과는 이렇게 검토합니다</h2><p>정확한 답을 받는 것보다, 틀렸을 때 빨리 발견하는 구조가 더 중요합니다.</p></div>
-          <div className="beginner-review-layout"><div className="beginner-review-list">{reviewItems.map((item) => <div key={item}><Check size={16} /><span>{item}</span></div>)}</div><div className="beginner-review-warning"><strong>처음에는 맡기지 말 것</strong><p>자동 발송, 자동 삭제, 결제, 계약·법률 판단, 고객에게 바로 전달되는 확정 문장은 초안 단계에서 멈추고 사람이 승인하세요.</p></div></div>
+        <div className="beginner-guide-section beginner-quickstart-section">
+          <div className="beginner-guide-section-head"><span>05 / FIRST 10 MINUTES</span><h2>AI를 처음 만나는 사람을 위한 첫 10분</h2><p>처음부터 어려운 기능을 만들지 말고, 질문 하나를 넣어 결과를 확인하는 연습부터 합니다.</p></div>
+          <div className="beginner-quickstart-grid"><article><b>1. 도구 열기</b><p>무료 ChatGPT 또는 Gemini에서 새 채팅을 엽니다. Gemini에서 실행형 결과를 보고 싶다면 Canvas를 선택합니다.</p></article><article><b>2. 예시 바꾸기</b><p>아래 프롬프트의 [ ] 부분만 내 상황으로 바꿉니다. 이름·전화번호·비밀번호는 지우고 넣습니다.</p></article><article><b>3. 답변 다시 묻기</b><p>한 번에 완벽하지 않아도 괜찮습니다. “표로 바꿔 줘”, “빠진 내용을 찾아 줘”처럼 한 가지씩 고칩니다.</p></article></div>
+          <div className="beginner-example-prompt quickstart-prompt">예시 프롬프트: 나는 AI를 처음 사용하는 사람입니다. 오늘 해야 할 일 [할 일 3개]를 가장 쉬운 순서로 정리해 주세요. 결과는 오늘 할 일·예상 시간·먼저 할 일 표로 보여 주세요. 모르는 내용은 추측하지 말고 질문으로 남겨 주세요.</div><CopyPromptButton prompt="나는 AI를 처음 사용하는 사람입니다. 오늘 해야 할 일 [할 일 3개]를 가장 쉬운 순서로 정리해 주세요. 결과는 오늘 할 일·예상 시간·먼저 할 일 표로 보여 주세요. 모르는 내용은 추측하지 말고 질문으로 남겨 주세요." />
+          <div className="beginner-good-bad-grid"><article><b>나쁜 프롬프트</b><p>여행 일정 짜줘.</p><small>정보가 너무 적어서 AI가 마음대로 정하고, 결과를 비교하기 어렵습니다.</small></article><article><b>좋은 프롬프트</b><p>부산 2박 3일 여행 일정을 만들어 주세요. 30대 부부이고 대중교통을 이용합니다. 하루 관광지 2곳과 맛집 1곳, 비 오는 날 대안을 넣고 공식 확인 필요 항목을 표시해 주세요.</p><small>목적·조건·결과 모양·검토 기준이 들어 있어 수정하기 쉽습니다.</small></article></div>
+        </div>
+
+        <div className="beginner-guide-section beginner-speaking-section">
+          <div className="beginner-guide-section-head"><span>05-B / SPEAK CLEARLY</span><h2>AI에게 어떻게 말해야 할지 모르겠어요</h2><p>어려운 전문 용어 대신 아래 다섯 가지를 평범한 말로 알려 주세요.</p></div>
+          <div className="beginner-speaking-grid">{[["목표", "무엇을 만들고 싶은지"], ["상황", "누가 언제 왜 쓰는지"], ["자료", "AI가 사용할 원문·파일·링크"], ["결과", "표·카드·메일처럼 받을 모양"], ["검토", "틀리지 않았는지 확인하는 방법"]].map(([label, text]) => <article key={label}><b>{label}</b><p>{text}</p></article>)}</div>
+          <div className="beginner-tip-box"><b>쉬운 재질문 예시</b><p>“초등학생도 이해하게 다시 써 줘.” · “빠진 조건을 질문해 줘.” · “원문에 없는 내용은 확인 필요로 표시해 줘.” · “실제로 따라 할 순서로 바꿔 줘.”</p></div>
+        </div>
+
+        <div className="beginner-guide-section beginner-safe-input-section">
+          <div className="beginner-guide-section-head"><span>05-C / SAFE INPUT</span><h2>AI에 넣으면 안 되는 정보</h2><p>무료 버전에서는 특히 조심하고, 유료 버전이라도 서비스의 데이터 설정과 회사 규정을 먼저 확인하세요.</p></div>
+          <div className="beginner-safe-grid"><article><b>그대로 넣지 않기</b><p>주민등록번호, 비밀번호, API 키, 계좌번호, 고객 연락처, 회사 비밀자료, 계약서 원본, 건강·병원 민감정보</p></article><article><b>이렇게 바꾸기</b><p>홍길동 → 고객 A<br />010-1234-5678 → 연락처 삭제<br />ABC회사 → 거래처 B<br />실제 금액 → 100만 원</p></article><article><b>유료 버전도 확인하기</b><p>유료라고 모든 자료가 자동으로 안전한 것은 아닙니다. 학습 사용 여부·보관 기간·관리자 설정·회사 승인 여부를 확인한 뒤 필요한 최소 자료만 사용하세요.</p></article></div>
+        </div>
+
+        <div className="beginner-guide-section beginner-scope-section">
+          <div className="beginner-guide-section-head"><span>05-D / START SMALL</span><h2>웹앱 제작 전 기능 욕심 줄이기</h2><p>처음에는 입력 1개, 결과 1개, 버튼 1~2개만 만들면 성공입니다.</p></div>
+          <div className="beginner-scope-grid"><article><b>처음 만들 것</b><p>입력창 1개 · 결과 카드 1개 · 실행 버튼 · 샘플 데이터 · 모바일 화면 · 빈 입력 안내</p></article><article><b>나중에 추가할 것</b><p>로그인 · 결제 · 지도 · 외부 API · 알림 · 관리자 화면 · 자동 발송 · 복잡한 저장 기능</p></article></div>
+          <div className="beginner-tip-box"><b>작게 시작하는 문장</b><p>“처음에는 여행지와 예산을 입력하면 추천 목록만 보여 주세요. 맛집·지도·로그인은 첫 화면이 작동한 뒤 하나씩 추가해 주세요.”</p></div>
+        </div>
+
+        <div className="beginner-guide-section beginner-spec-section">
+          <div className="beginner-guide-section-head"><span>05-E / APP SPEC</span><h2>웹앱 만들기 전 기능 명세서 자동 작성</h2><p>제작 프롬프트를 바로 넣기 전에 AI가 앱의 뼈대를 먼저 정리하게 하세요.</p></div>
+          <div className="beginner-spec-grid">{["앱 이름·누구를 위한 앱인지", "입력값과 결과값", "필요한 화면과 버튼", "빈 입력·오류·로딩 상황", "모바일 화면과 배포 방법"].map((item, index) => <article key={item}><span>{String(index + 1).padStart(2, "0")}</span><b>{item}</b></article>)}</div>
+          <div className="beginner-example-prompt quickstart-prompt">기능 명세서 프롬프트: 내 아이디어 [아이디어]를 초보자용 웹앱 기능 명세서로 바꿔 주세요. 앱 이름·사용자·입력값·결과값·화면 목록·버튼·샘플 데이터·빈 화면·오류 화면·모바일 규칙·배포 순서를 표로 작성하고, 첫 버전과 나중에 추가할 기능을 나눠 주세요.</div><CopyPromptButton prompt="내 아이디어 [아이디어]를 초보자용 웹앱 기능 명세서로 바꿔 주세요. 앱 이름·사용자·입력값·결과값·화면 목록·버튼·샘플 데이터·빈 화면·오류 화면·모바일 규칙·배포 순서를 표로 작성하고, 첫 버전과 나중에 추가할 기능을 나눠 주세요." />
+        </div>
+
+        <div className="beginner-guide-section beginner-feature-request-section">
+          <div className="beginner-guide-section-head"><span>05-F / NEXT FEATURES</span><h2>기능 추가 요청 예시 모음</h2><p>1단계 웹앱이 작동한 뒤 아래 문장을 하나씩 복사해 기능을 추가하세요.</p></div>
+          <div className="beginner-feature-request-grid">{["맛집 추천 탭과 거리·가격대·대표 메뉴·영업시간·공식 링크를 추가해 줘.", "옷 스타일 필터와 날씨·TPO·색상·예산별 코디 카드를 추가해 줘.", "가격대·지역·카테고리·연령대 필터와 결과 비교표를 추가해 줘.", "즐겨찾기·저장·다시 추천·결과 복사 버튼을 추가해 줘.", "검색 결과가 없을 때 안내하고, 잘못된 입력에는 고치는 방법을 보여 줘.", "모바일에서 한 손으로 쓰기 좋게 버튼과 카드 간격을 고쳐 줘.", "추천 근거·출처·확인 필요 배지를 카드에 표시해 줘.", "로딩 화면과 오류 화면을 추가하고 샘플 데이터와 실제 데이터를 구분해 줘."].map((prompt, index) => <article key={prompt}><span>기능 {index + 1}</span><p>{prompt}</p><CopyPromptButton prompt={prompt} /></article>)}</div>
         </div>
 
         <div className="beginner-guide-section beginner-publish-section">
           <div className="beginner-guide-section-head"><span>07 / SHARE & PUBLISH</span><h2>작은 결과를 배포하는 방법</h2><p>업무 문서는 공유 권한을 확인하고, 웹 결과물은 저장소와 배포 주소를 분리해 관리합니다.</p></div>
           <div className="beginner-publish-grid"><article><Rocket size={21} /><h3>문서·슬라이드</h3><p>최종본, 출처, 작성일, 검토자를 적고 공유 링크의 접근 권한을 확인합니다.</p></article><article><Rocket size={21} /><h3>웹페이지</h3><p>파일을 GitHub 저장소에 올리고 Actions로 빌드한 뒤 GitHub Pages 주소에서 모바일 화면과 주요 링크를 확인합니다.</p></article><article><Rocket size={21} /><h3>다음 개선</h3><p>방문자가 막힌 지점과 자주 쓰는 업무를 기록해 다음 스킬·워크플로우 후보로 바꿉니다.</p></article></div>
           <div className="beginner-final-cta"><div><strong>바로 하나 골라 시작하세요.</strong><span>업무일지 한 주치 또는 회의 메모 3건이면 충분합니다.</span></div><Link href="/workflows" className="primary-action">업무부터 고르기 <ArrowRight size={16} /></Link></div>
+        </div>
+
+        <div className="beginner-guide-section beginner-review-section">
+          <div className="beginner-guide-section-head"><span>LAST / REVIEW TRAINING</span><h2>AI 결과 검수 훈련</h2><p>가이드의 마지막 단계입니다. AI 결과를 바로 믿지 말고 아래 초보자 검수 5가지를 확인하세요.</p></div>
+          <div className="beginner-review-layout"><div className="beginner-review-list">{reviewItems.map((item) => <div key={item}><Check size={16} /><span>{item}</span></div>)}</div><div className="beginner-review-warning"><strong>처음에는 맡기지 말 것</strong><p>자동 발송, 자동 삭제, 결제, 계약·법률 판단, 고객에게 바로 전달되는 확정 문장은 초안 단계에서 멈추고 사람이 승인하세요.</p></div></div>
         </div>
       </section>
     </PageFrame>
