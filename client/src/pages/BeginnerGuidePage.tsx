@@ -140,18 +140,18 @@ export function BeginnerGuidePage() {
         </div>
 
         <div className="beginner-guide-section beginner-skill-choice">
-          <div className="beginner-guide-section-head"><span>03 / SKILL CHOICE</span><h2>스킬은 ‘전문가의 작업 규칙’입니다</h2><p>스킬을 고를 때는 이름보다 입력 자료, 결과 형식, 검수 기준이 내 업무와 맞는지 확인합니다.</p></div>
+          <div className="beginner-guide-section-head"><span>03 / SKILL CHOICE</span><h2>내 일에 맞는 스킬 고르기</h2><p>스킬은 AI에게 일을 시킬 때 참고하는 작업 설명서입니다. 이름보다 입력 자료, 결과 형식, 검수 기준이 내 업무와 맞는지 확인합니다.</p></div>
           <div className="beginner-skill-flow"><div><b>문제</b><span>무엇을 반복하는가?</span></div><ArrowRight /><div><b>스킬</b><span>어떤 규칙으로 처리할까?</span></div><ArrowRight /><div><b>결과</b><span>어떤 형식이어야 할까?</span></div><ArrowRight /><div><b>검수</b><span>무엇을 사람이 볼까?</span></div></div>
           <div className="beginner-skill-tips"><p><strong>초급 스킬을 고르는 신호</strong> 입력과 출력 예시가 있고, 한 번에 한 가지 결과를 만들며, 사람이 승인해야 하는 지점이 적혀 있습니다.</p><Link href="/skills" className="text-link">스킬 라이브러리에서 찾기 <ArrowRight size={15} /></Link></div>
         </div>
 
         <div className="beginner-guide-section beginner-prompt-section">
-          <div className="beginner-guide-section-head"><span>04 / PROMPT RECIPE</span><h2>프롬프트는 5칸으로 씁니다</h2><p>“요약해줘” 대신 역할·목표·자료·형식·검토 조건을 알려주면 초보자도 결과를 비교할 수 있습니다.</p></div>
+          <div className="beginner-guide-section-head"><span>04 / PROMPT RECIPE</span><h2>처음 쓰는 프롬프트 만들기</h2><p>“요약해줘”보다 역할·목표·자료·형식·검토 조건을 차례로 적으면 결과를 비교하고 고치기 쉽습니다.</p></div>
           <div className="beginner-prompt-card">{promptParts.map(([label, text]) => <div key={label}><span>{label}</span><p>{text}</p></div>)}<button type="button" className="beginner-copy-note" onClick={() => navigator.clipboard?.writeText(promptParts.map(([label, text]) => `${label}: ${text}`).join("\n"))}><ClipboardCheck size={16} /> 이 구조를 복사해 내 업무 내용으로 바꿔 쓰세요</button></div>
         </div>
 
         <div className="beginner-guide-section beginner-example-section">
-          <div className="beginner-guide-section-head"><span>04-B / COPY & TRY</span><h2>상세 프롬프트로 만드는 10가지</h2><p>입력 예시는 시작 재료이고, 아래 제작 프롬프트가 실제 설계도입니다. 대괄호 안의 조건을 바꾼 뒤 무료 ChatGPT 또는 Gemini에 붙여 넣고 결과를 검토하세요.</p></div>
+          <div className="beginner-guide-section-head"><span>04-B / COPY & TRY</span><h2>따라 하며 배우는 웹앱 10가지</h2><p>처음부터 외우지 않아도 됩니다. 아래 예시를 하나 골라 대괄호 안의 조건을 바꾸고, 무료 ChatGPT 또는 Gemini에서 실행하며 기능을 하나씩 배워 보세요.</p></div>
           <div className="beginner-example-grid">{promptExamples.map(([num, title, input, prompt]) => { const [feature, run, checklist, review] = promptGuides[num]; const nextPrompts = nextPromptGuides[num] || []; const reviewRecommendations = reviewCompleteRecommendations[num] || []; return <article key={num}><div className="beginner-example-top"><span>{num}</span><small>무료 ChatGPT · Gemini</small></div><h3>{title}</h3><p className="beginner-example-input"><strong>입력 예시</strong>{input}</p><details open><summary>실행형 웹앱 제작 프롬프트</summary><p className="beginner-example-prompt">{prompt}</p><CopyPromptButton prompt={prompt} /></details><div className="beginner-example-guide"><div><b>01 초안</b><p>주요 기능: {feature} 목표·입력자료·화면·샘플 데이터를 먼저 정합니다.</p></div><div><b>02 검토</b><p>{checklist} 원본·출처·사실과 추측을 대조합니다.</p></div><div><b>03 보완</b><p>결과 형식과 제한을 보완합니다. 작동 방법: {run}</p></div><div><b>04 실행 준비</b><p>담당자·승인자·기록 방법을 정하고 외부 발송·수정·삭제 전 승인을 둡니다.</p></div><div><b>05 반복 개선</b><p>만든 뒤 검토: {review} 실제 사용 결과를 기록해 다음 회차에 반영합니다.</p></div><div><b>공유·배포</b><p>샘플 입력·빈 입력·오류 입력을 테스트하고 GitHub에 저장한 뒤 Pages 주소에서 모바일·버튼·링크를 확인합니다.</p></div></div><div className="beginner-next-prompts"><b>1단계 완료 후 추천 기능·프롬프트</b>{nextPrompts.map((nextPrompt, index) => <div key={nextPrompt}><span>추천 {index + 1}</span><p>{nextPrompt}</p><CopyPromptButton prompt={nextPrompt} /></div>)}</div><div className="beginner-next-prompts beginner-review-recommendations"><b>2단계 검토 완료 후 추천 기능·프롬프트</b><p className="beginner-recommendation-note">검토에서 확인한 사실과 빠진 내용을 반영한 뒤, 아래 기능 중 하나를 골라 3단계 보완으로 넘어가세요.</p>{reviewRecommendations.map((recommendation, index) => <div key={recommendation}><span>추천 {index + 1}</span><p>{recommendation}</p><CopyPromptButton prompt={recommendation} /></div>)}</div></article>; })}</div>
         </div>
 
@@ -206,6 +206,12 @@ export function BeginnerGuidePage() {
           <div className="beginner-guide-section-head"><span>07 / SHARE & PUBLISH</span><h2>작은 결과를 배포하는 방법</h2><p>업무 문서는 공유 권한을 확인하고, 웹 결과물은 저장소와 배포 주소를 분리해 관리합니다.</p></div>
           <div className="beginner-publish-grid"><article><Rocket size={21} /><h3>문서·슬라이드</h3><p>최종본, 출처, 작성일, 검토자를 적고 공유 링크의 접근 권한을 확인합니다.</p></article><article><Rocket size={21} /><h3>웹페이지</h3><p>파일을 GitHub 저장소에 올리고 Actions로 빌드한 뒤 GitHub Pages 주소에서 모바일 화면과 주요 링크를 확인합니다.</p></article><article><Rocket size={21} /><h3>다음 개선</h3><p>방문자가 막힌 지점과 자주 쓰는 업무를 기록해 다음 스킬·워크플로우 후보로 바꿉니다.</p></article></div>
           <div className="beginner-final-cta"><div><strong>바로 하나 골라 시작하세요.</strong><span>업무일지 한 주치 또는 회의 메모 3건이면 충분합니다.</span></div><Link href="/workflows" className="primary-action">업무부터 고르기 <ArrowRight size={16} /></Link></div>
+        </div>
+
+        <div className="beginner-guide-section beginner-next-stop-section">
+          <div className="beginner-guide-section-head"><span>08 / NEXT STOP</span><h2>이제 어디로 갈까요?</h2><p>가이드에서 배운 내용을 실제 메뉴에서 바로 이어서 실행해 보세요.</p></div>
+          <div className="beginner-final-checklist"><b>배포 전 6가지 체크</b><div>{["입력 예시·빈 입력·오류 입력을 시험했나요?", "모바일 화면에서 글자와 버튼이 잘 보이나요?", "가격·날짜·영업시간·출처를 공식 자료와 비교했나요?", "실제 개인정보와 비밀번호를 지웠나요?", "자동 발송·삭제·결제 전에 사람 승인 단계가 있나요?", "배포 주소와 다음에 고칠 점을 메모했나요?"].map((item) => <span key={item}><Check size={14} />{item}</span>)}</div></div>
+          <div className="beginner-next-links"><Link href="/workflows"><b>업무 찾기</b><span>내가 하려는 업무에 맞는 진행 순서와 프롬프트 찾기 <ArrowRight size={14} /></span></Link><Link href="/tools"><b>도구 찾기</b><span>ChatGPT·Gemini 등 결과에 맞는 도구 비교하기 <ArrowRight size={14} /></span></Link><Link href="/skills"><b>스킬 라이브러리</b><span>반복 작업을 위한 작업 설명서 찾아보기 <ArrowRight size={14} /></span></Link></div>
         </div>
 
         <div className="beginner-guide-section beginner-review-section">
