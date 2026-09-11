@@ -1432,3 +1432,45 @@ body { background:var(--paper); color:var(--ink); }
 .beginner-next-links b { color:var(--tomato); font:700 15px/1.2 var(--display); }
 .beginner-next-links span { display:flex; align-items:flex-end; justify-content:space-between; gap:8px; color:var(--muted); font-size:12px; line-height:1.55; }
 @media (max-width:620px) { .beginner-final-checklist > div,.beginner-next-links { grid-template-columns:1fr; } }
+
+/* Workflow roadmap: keep the five stages readable as a guided task, not a text dump. */
+.workflow-roadmap { margin:clamp(32px,5vw,64px) 0; padding:clamp(22px,4vw,42px); border:1px solid var(--line); background:var(--surface); box-shadow:var(--shadow-sm); }
+.roadmap-heading { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; padding-bottom:24px; border-bottom:1px solid var(--line); }
+.roadmap-heading h2 { margin:10px 0 8px; font:700 clamp(28px,4vw,48px)/1 var(--display); letter-spacing:-.06em; }
+.roadmap-heading p { max-width:54ch; margin:0; color:var(--muted); font-size:13px; line-height:1.65; }
+.roadmap-progress { flex:0 0 auto; padding:10px 12px; border:1px solid var(--cobalt); color:var(--cobalt); font:800 12px/1 var(--display); letter-spacing:.08em; }
+.roadmap-steps { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); margin-top:24px; border-top:1px solid var(--ink); border-left:1px solid var(--line); }
+.roadmap-steps button { display:grid; gap:10px; min-height:92px; padding:14px; border:0; border-right:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--surface-soft); color:var(--muted); text-align:left; cursor:pointer; transition:background .18s ease,color .18s ease,transform .18s ease; }
+.roadmap-steps button:hover { background:var(--blue-soft); color:var(--ink); transform:translateY(-2px); }
+.roadmap-steps button:focus-visible { outline:3px solid var(--tomato); outline-offset:-3px; }
+.roadmap-steps button.is-active { background:var(--ink); color:var(--white); box-shadow:inset 0 -4px 0 var(--tomato); }
+.roadmap-steps button.is-done { background:var(--mint-soft); color:var(--ink); }
+.roadmap-steps b { color:var(--tomato); font:800 11px/1 var(--display); letter-spacing:.08em; }
+.roadmap-steps button.is-active b { color:#ffb09f; }
+.roadmap-steps span { font-size:13px; font-weight:700; line-height:1.35; }
+.roadmap-work { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr); gap:14px; margin-top:14px; }
+.roadmap-prompt,.roadmap-review { min-width:0; padding:22px; border:1px solid var(--line); background:var(--white); }
+.roadmap-prompt { border-top:4px solid var(--cobalt); }
+.roadmap-review { border-top:4px solid #1d8b63; }
+.roadmap-label { display:block; color:var(--tomato); font:800 10px/1.2 var(--display); letter-spacing:.12em; text-transform:uppercase; }
+.roadmap-prompt h3 { margin:14px 0 10px; font:700 24px/1.15 var(--display); letter-spacing:-.04em; }
+.roadmap-prompt p { margin:0; color:var(--muted); font-size:13px; line-height:1.75; }
+.roadmap-prompt button,.roadmap-recommendation-grid button { display:inline-flex; align-items:center; justify-content:center; margin-top:18px; padding:10px 14px; border:1px solid var(--cobalt); background:var(--cobalt); color:#fff; font-size:11px; font-weight:800; cursor:pointer; transition:background .18s ease,transform .18s ease; }
+.roadmap-prompt button:hover,.roadmap-recommendation-grid button:hover { background:var(--ink); transform:translateY(-2px); }
+.roadmap-review { display:flex; flex-direction:column; gap:11px; }
+.roadmap-review label { display:flex; align-items:flex-start; gap:8px; color:var(--ink); font-size:12px; line-height:1.5; cursor:pointer; }
+.roadmap-review input { flex:0 0 auto; width:15px; height:15px; margin-top:1px; accent-color:#1d8b63; }
+.roadmap-review strong { margin-top:auto; padding-top:16px; border-top:1px dashed var(--line); font:700 15px/1.2 var(--display); }
+.roadmap-review > p { margin:0; color:var(--muted); font-size:12px; line-height:1.6; }
+@media (max-width:760px) {
+  .roadmap-heading { align-items:flex-start; flex-direction:column; }
+  .roadmap-progress { align-self:flex-start; }
+  .roadmap-steps { grid-template-columns:repeat(5,minmax(112px,1fr)); overflow-x:auto; }
+  .roadmap-steps button { min-height:84px; }
+  .roadmap-work { grid-template-columns:1fr; }
+}
+@media (max-width:520px) {
+  .workflow-roadmap { padding:18px 14px; }
+  .roadmap-heading h2 { font-size:32px; }
+  .roadmap-prompt,.roadmap-review { padding:18px; }
+}
