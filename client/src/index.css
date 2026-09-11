@@ -1501,3 +1501,23 @@ body { background:var(--paper); color:var(--ink); }
   .workflow-search-spotlight input { font-size:16px; }
 }
 @media (prefers-reduced-motion:reduce) { .workflow-search-spotlight { animation:none !important; transition:none; } }
+
+/* Home to beginner guide handoff. */
+.home-beginner-bridge { display:flex; align-items:center; justify-content:space-between; gap:28px; margin:clamp(24px,4vw,52px) 5vw; padding:clamp(24px,4vw,42px); border:1px solid #b7c8ff; background:linear-gradient(110deg,#eaf0ff,#fff4ef); box-shadow:7px 7px 0 rgba(53,92,255,.12); }
+.home-beginner-bridge h2 { margin:10px 0 12px; font:700 clamp(28px,4vw,48px)/1 var(--display); letter-spacing:-.06em; }
+.home-beginner-bridge h2 em { color:var(--tomato); font-style:normal; }
+.home-beginner-bridge p { max-width:48ch; margin:0; color:var(--muted); font-size:13px; line-height:1.7; }
+.home-beginner-bridge .primary-action { flex:0 0 auto; white-space:nowrap; }
+/* Popular workflow chips: each chip has a small, friendly lift and focus response. */
+.workflow-popular-tags button { position:relative; overflow:hidden; isolation:isolate; }
+.workflow-popular-tags button::before { content:""; position:absolute; z-index:-1; left:-35%; top:0; width:30%; height:100%; transform:skewX(-18deg); background:rgba(255,255,255,.72); transition:left .45s var(--ease-out); }
+.workflow-popular-tags button:hover::before,.workflow-popular-tags button:focus-visible::before { left:115%; }
+.workflow-popular-tags button:active { transform:translateY(1px) scale(.96); }
+.workflow-popular-tags button:focus-visible { outline:3px solid var(--tomato); outline-offset:3px; }
+.workflow-popular-tags button:nth-of-type(1) { animation-delay:80ms; }.workflow-popular-tags button:nth-of-type(2) { animation-delay:160ms; }.workflow-popular-tags button:nth-of-type(3) { animation-delay:240ms; }.workflow-popular-tags button:nth-of-type(4) { animation-delay:320ms; }.workflow-popular-tags button:nth-of-type(5) { animation-delay:400ms; }.workflow-popular-tags button:nth-of-type(6) { animation-delay:480ms; }.workflow-popular-tags button:nth-of-type(7) { animation-delay:560ms; }.workflow-popular-tags button:nth-of-type(8) { animation-delay:640ms; }
+@keyframes popular-chip-in { from { opacity:0; transform:translateY(8px) scale(.94); } to { opacity:1; transform:translateY(0) scale(1); } }
+@media (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .workflow-popular-tags button { animation:popular-chip-in .45s var(--ease-out) both; }
+}
+@media (max-width:700px) { .home-beginner-bridge { align-items:flex-start; flex-direction:column; margin-left:20px; margin-right:20px; } .home-beginner-bridge .primary-action { width:100%; justify-content:space-between; } }
+@media (prefers-reduced-motion:reduce) { .workflow-popular-tags button { animation:none !important; transition:none; } }
