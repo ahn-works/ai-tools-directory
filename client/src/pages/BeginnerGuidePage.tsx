@@ -98,6 +98,33 @@ function CopyPromptButton({ prompt }: { prompt: string }) {
   return <button type="button" className="beginner-copy-button" onClick={copy}><Copy size={14} /> {copied ? "복사됨" : "프롬프트 복사"}</button>;
 }
 
+const progressItems = [
+  ["01", "문제 고르기", "무엇을 줄일지 정하기"],
+  ["02", "AI에게 말하기", "조건과 결과 모양 쓰기"],
+  ["03", "웹앱 만들기", "입력·결과·버튼 만들기"],
+  ["04", "검수하기", "사실과 작동 확인하기"],
+  ["05", "배포하기", "주소에서 다시 시험하기"],
+];
+
+const repairPrompts = [
+  "너무 어려워요. 초등학생도 이해할 수 있는 쉬운 말과 짧은 단계로 다시 써 주세요.",
+  "결과가 마음에 들지 않아요. 빠진 조건을 먼저 질문하고, 답을 기다린 뒤 다시 만들어 주세요.",
+  "표로 바꿔 주세요. 각 항목에 예시와 확인 필요 여부를 함께 표시해 주세요.",
+  "원문에 없는 내용은 추측하지 말고 ‘확인 필요’라고 표시해 주세요.",
+  "지금 만든 기능은 그대로 두고, [추가할 기능] 하나만 더해 주세요. 바뀐 부분도 알려 주세요.",
+  "빈 입력·잘못된 입력·오류가 생겼을 때 사용자에게 보여 줄 안내도 추가해 주세요.",
+];
+
+function PromptBuilder() {
+  const [goal, setGoal] = useState("");
+  const [audience, setAudience] = useState("");
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [rules, setRules] = useState("");
+  const prompt = `당신은 초보자를 돕는 AI 업무 도우미입니다.\n목표: ${goal || "[무엇을 만들고 싶은지]"}\n사용자: ${audience || "[누가 사용할지]"}\n입력 자료: ${input || "[AI에게 줄 자료나 조건]"}\n결과 형식: ${output || "[표·카드·메일·웹앱 등 원하는 모양]"}\n지켜야 할 규칙: ${rules || "모르는 내용은 추측하지 말고 확인 필요로 표시해 주세요."}\n먼저 부족한 정보를 질문한 뒤, 초보자도 따라 할 수 있는 순서로 결과를 만들어 주세요. 사실·숫자·날짜는 원문과 대조할 수 있게 표시하고, 웹앱이라면 입력 화면·결과 화면·버튼·빈 입력 안내를 포함한 실행 가능한 반응형 UI로 제안해 주세요.`;
+  return <div className="beginner-prompt-builder"><div className="beginner-prompt-builder-fields"><label>무엇을 만들까요?<input value={goal} onChange={(event) => setGoal(event.target.value)} placeholder="예: 여행 쇼핑 목록" /></label><label>누가 쓰나요?<input value={audience} onChange={(event) => setAudience(event.target.value)} placeholder="예: 일본 여행을 처음 가는 사람" /></label><label>무엇을 넣나요?<textarea value={input} onChange={(event) => setInput(event.target.value)} placeholder="예: 국가, 마트, 예산, 나이" /></label><label>어떤 모양으로 받을까요?<input value={output} onChange={(event) => setOutput(event.target.value)} placeholder="예: 필터가 있는 웹앱 카드" /></label><label>꼭 지킬 규칙은 무엇인가요?<textarea value={rules} onChange={(event) => setRules(event.target.value)} placeholder="예: 가격은 공식 확인 필요로 표시" /></label></div><div className="beginner-generated-prompt"><b>완성된 프롬프트</b><p>{prompt}</p><CopyPromptButton prompt={prompt} /></div></div>;
+}
+
 const reviewItems = ["원문에 없는 사실을 추가하지 않았는가?", "숫자·이름·날짜·링크를 원본과 대조했는가?", "개인정보·비밀번호·API 키를 제거했는가?", "결과물을 실제 업무에 쓰기 전에 사람이 승인했는가?", "다음번에 재사용할 프롬프트와 실패 사례를 저장했는가?"];
 
 export function BeginnerGuidePage() {
@@ -117,7 +144,9 @@ export function BeginnerGuidePage() {
           </div>
         </div>
 
-        <div className="beginner-guide-section beginner-guide-start">
+        <section className="beginner-progress" aria-label="초보자 가이드 진행 순서"><div className="beginner-progress-head"><div><span>오늘의 진행표</span><h2>처음부터 배포까지 5걸음</h2></div><p>한 번에 다 하지 않아도 괜찮아요. 오늘은 1단계만 끝내도 충분합니다.</p></div><div className="beginner-progress-track">{progressItems.map(([num, title, text]) => <a href={num === "01" ? "#beginner-start" : num === "02" ? "#beginner-prompt-builder" : num === "03" ? "#beginner-webapps" : num === "04" ? "#beginner-review" : "#beginner-publish"} key={num}><b>{num}</b><strong>{title}</strong><span>{text}</span></a>)}</div></section>
+
+        <div id="beginner-start" className="beginner-guide-section beginner-guide-start">
           <div className="beginner-guide-section-head"><span>01 / FIRST SETUP</span><h2>처음 30분에 할 일</h2><p>도구를 고르기 전에 문제와 결과물을 정하면, 무료 도구만으로도 충분히 실험할 수 있습니다.</p></div>
           <div className="beginner-step-grid">{starterSteps.map(([num, title, text]) => <article key={num}><span>{num}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
         </div>
@@ -145,12 +174,12 @@ export function BeginnerGuidePage() {
           <div className="beginner-skill-tips"><p><strong>초급 스킬을 고르는 신호</strong> 입력과 출력 예시가 있고, 한 번에 한 가지 결과를 만들며, 사람이 승인해야 하는 지점이 적혀 있습니다.</p><Link href="/skills" className="text-link">스킬 라이브러리에서 찾기 <ArrowRight size={15} /></Link></div>
         </div>
 
-        <div className="beginner-guide-section beginner-prompt-section">
+        <div id="beginner-prompt-builder" className="beginner-guide-section beginner-prompt-section">
           <div className="beginner-guide-section-head"><span>04 / PROMPT RECIPE</span><h2>처음 쓰는 프롬프트 만들기</h2><p>“요약해줘”보다 역할·목표·자료·형식·검토 조건을 차례로 적으면 결과를 비교하고 고치기 쉽습니다.</p></div>
-          <div className="beginner-prompt-card">{promptParts.map(([label, text]) => <div key={label}><span>{label}</span><p>{text}</p></div>)}<button type="button" className="beginner-copy-note" onClick={() => navigator.clipboard?.writeText(promptParts.map(([label, text]) => `${label}: ${text}`).join("\n"))}><ClipboardCheck size={16} /> 이 구조를 복사해 내 업무 내용으로 바꿔 쓰세요</button></div>
+          <div className="beginner-prompt-card">{promptParts.map(([label, text]) => <div key={label}><span>{label}</span><p>{text}</p></div>)}<button type="button" className="beginner-copy-note" onClick={() => navigator.clipboard?.writeText(promptParts.map(([label, text]) => `${label}: ${text}`).join("\n"))}><ClipboardCheck size={16} /> 이 구조를 복사해 내 업무 내용으로 바꿔 쓰세요</button></div><PromptBuilder />
         </div>
 
-        <div className="beginner-guide-section beginner-example-section">
+        <div id="beginner-webapps" className="beginner-guide-section beginner-example-section">
           <div className="beginner-guide-section-head"><span>04-B / COPY & TRY</span><h2>따라 하며 배우는 웹앱 10가지</h2><p>처음부터 외우지 않아도 됩니다. 아래 예시를 하나 골라 대괄호 안의 조건을 바꾸고, 무료 ChatGPT 또는 Gemini에서 실행하며 기능을 하나씩 배워 보세요.</p></div>
           <div className="beginner-example-grid">{promptExamples.map(([num, title, input, prompt]) => { const [feature, run, checklist, review] = promptGuides[num]; const nextPrompts = nextPromptGuides[num] || []; const reviewRecommendations = reviewCompleteRecommendations[num] || []; return <article key={num}><div className="beginner-example-top"><span>{num}</span><small>무료 ChatGPT · Gemini</small></div><h3>{title}</h3><p className="beginner-example-input"><strong>입력 예시</strong>{input}</p><details open><summary>복사해서 웹앱 만들기</summary><p className="beginner-example-prompt">{prompt}</p><CopyPromptButton prompt={prompt} /></details><div className="beginner-example-guide"><div><b>01 초안</b><p>주요 기능: {feature} 목표·입력자료·화면·샘플 데이터를 먼저 정합니다.</p></div><div><b>02 검토</b><p>{checklist} 원본·출처·사실과 추측을 대조합니다.</p></div><div><b>03 보완</b><p>결과 형식과 제한을 보완합니다. 작동 방법: {run}</p></div><div><b>04 실행 준비</b><p>담당자·승인자·기록 방법을 정하고 외부 발송·수정·삭제 전 승인을 둡니다.</p></div><div><b>05 반복 개선</b><p>만든 뒤 검토: {review} 실제 사용 결과를 기록해 다음 회차에 반영합니다.</p></div><div><b>공유·배포</b><p>샘플 입력·빈 입력·오류 입력을 테스트하고 GitHub에 저장한 뒤 Pages 주소에서 모바일·버튼·링크를 확인합니다.</p></div></div><div className="beginner-next-prompts"><b>1단계 완료 후 추천 기능·프롬프트</b>{nextPrompts.map((nextPrompt, index) => <div key={nextPrompt}><span>추천 {index + 1}</span><p>{nextPrompt}</p><CopyPromptButton prompt={nextPrompt} /></div>)}</div><div className="beginner-next-prompts beginner-review-recommendations"><b>2단계 검토 완료 후 추천 기능·프롬프트</b><p className="beginner-recommendation-note">검토에서 확인한 사실과 빠진 내용을 반영한 뒤, 아래 기능 중 하나를 골라 3단계 보완으로 넘어가세요.</p>{reviewRecommendations.map((recommendation, index) => <div key={recommendation}><span>추천 {index + 1}</span><p>{recommendation}</p><CopyPromptButton prompt={recommendation} /></div>)}</div></article>; })}</div>
         </div>
@@ -180,6 +209,8 @@ export function BeginnerGuidePage() {
           <div className="beginner-tip-box"><b>쉬운 재질문 예시</b><p>“초등학생도 이해하게 다시 써 줘.” · “빠진 조건을 질문해 줘.” · “원문에 없는 내용은 확인 필요로 표시해 줘.” · “실제로 따라 할 순서로 바꿔 줘.”</p></div>
         </div>
 
+        <div className="beginner-guide-section beginner-repair-section"><div className="beginner-guide-section-head"><span>06-B / WHEN THE ANSWER IS ODD</span><h2>결과가 이상할 때 다시 묻는 문장</h2><p>처음 답변이 마음에 들지 않아도 괜찮아요. 아래 문장 하나를 복사해 다시 요청해 보세요.</p></div><div className="beginner-repair-grid">{repairPrompts.map((prompt, index) => <article key={prompt}><span>다시 묻기 {index + 1}</span><p>{prompt}</p><CopyPromptButton prompt={prompt} /></article>)}</div></div>
+
         <div className="beginner-guide-section beginner-safe-input-section">
           <div className="beginner-guide-section-head"><span>06-C / SAFE INPUT</span><h2>AI에 넣으면 안 되는 정보</h2><p>무료 버전에서는 특히 조심하고, 유료 버전이라도 서비스의 데이터 설정과 회사 규정을 먼저 확인하세요.</p></div>
           <div className="beginner-safe-grid"><article><b>그대로 넣지 않기</b><p>주민등록번호, 비밀번호, API 키, 계좌번호, 고객 연락처, 회사 비밀자료, 계약서 원본, 건강·병원 민감정보</p></article><article><b>이렇게 바꾸기</b><p>홍길동 → 고객 A<br />010-1234-5678 → 연락처 삭제<br />ABC회사 → 거래처 B<br />실제 금액 → 100만 원</p></article><article><b>유료 버전도 확인하기</b><p>유료라고 모든 자료가 자동으로 안전한 것은 아닙니다. 학습 사용 여부·보관 기간·관리자 설정·회사 승인 여부를 확인한 뒤 필요한 최소 자료만 사용하세요.</p></article></div>
@@ -202,7 +233,7 @@ export function BeginnerGuidePage() {
           <div className="beginner-feature-request-grid">{["맛집 추천 탭과 거리·가격대·대표 메뉴·영업시간·공식 링크를 추가해 줘.", "옷 스타일 필터와 날씨·TPO·색상·예산별 코디 카드를 추가해 줘.", "가격대·지역·카테고리·연령대 필터와 결과 비교표를 추가해 줘.", "즐겨찾기·저장·다시 추천·결과 복사 버튼을 추가해 줘.", "검색 결과가 없을 때 안내하고, 잘못된 입력에는 고치는 방법을 보여 줘.", "모바일에서 한 손으로 쓰기 좋게 버튼과 카드 간격을 고쳐 줘.", "추천 근거·출처·확인 필요 배지를 카드에 표시해 줘.", "로딩 화면과 오류 화면을 추가하고 샘플 데이터와 실제 데이터를 구분해 줘."].map((prompt, index) => <article key={prompt}><span>기능 {index + 1}</span><p>{prompt}</p><CopyPromptButton prompt={prompt} /></article>)}</div>
         </div>
 
-        <div className="beginner-guide-section beginner-publish-section">
+        <div id="beginner-publish" className="beginner-guide-section beginner-publish-section">
           <div className="beginner-guide-section-head"><span>07 / SHARE & PUBLISH</span><h2>작은 결과를 배포하는 방법</h2><p>업무 문서는 공유 권한을 확인하고, 웹 결과물은 저장소와 배포 주소를 분리해 관리합니다.</p></div>
           <div className="beginner-publish-grid"><article><Rocket size={21} /><h3>문서·슬라이드</h3><p>최종본, 출처, 작성일, 검토자를 적고 공유 링크의 접근 권한을 확인합니다.</p></article><article><Rocket size={21} /><h3>웹페이지</h3><p>파일을 GitHub 저장소에 올리고 Actions로 빌드한 뒤 GitHub Pages 주소에서 모바일 화면과 주요 링크를 확인합니다.</p></article><article><Rocket size={21} /><h3>다음 개선</h3><p>방문자가 막힌 지점과 자주 쓰는 업무를 기록해 다음 스킬·워크플로우 후보로 바꿉니다.</p></article></div>
           <div className="beginner-final-cta"><div><strong>바로 하나 골라 시작하세요.</strong><span>업무일지 한 주치 또는 회의 메모 3건이면 충분합니다.</span></div><Link href="/workflows" className="primary-action">업무부터 고르기 <ArrowRight size={16} /></Link></div>
@@ -214,7 +245,7 @@ export function BeginnerGuidePage() {
           <div className="beginner-next-links"><Link href="/workflows"><b>업무 찾기</b><span>내가 하려는 업무에 맞는 진행 순서와 프롬프트 찾기 <ArrowRight size={14} /></span></Link><Link href="/tools"><b>도구 찾기</b><span>ChatGPT·Gemini 등 결과에 맞는 도구 비교하기 <ArrowRight size={14} /></span></Link><Link href="/skills"><b>스킬 라이브러리</b><span>반복 작업을 위한 작업 설명서 찾아보기 <ArrowRight size={14} /></span></Link></div>
         </div>
 
-        <div className="beginner-guide-section beginner-review-section">
+        <div id="beginner-review" className="beginner-guide-section beginner-review-section">
           <div className="beginner-guide-section-head"><span>LAST / REVIEW TRAINING</span><h2>AI 결과 검수 훈련</h2><p>가이드의 마지막 단계입니다. AI 결과를 바로 믿지 말고 아래 초보자 검수 5가지를 확인하세요.</p></div>
           <div className="beginner-review-layout"><div className="beginner-review-list">{reviewItems.map((item) => <div key={item}><Check size={16} /><span>{item}</span></div>)}</div><div className="beginner-review-warning"><strong>처음에는 맡기지 말 것</strong><p>자동 발송, 자동 삭제, 결제, 계약·법률 판단, 고객에게 바로 전달되는 확정 문장은 초안 단계에서 멈추고 사람이 승인하세요.</p></div></div>
         </div>
